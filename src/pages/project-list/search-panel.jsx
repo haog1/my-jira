@@ -1,7 +1,6 @@
 import React from 'react'
 
 export const SearchPanel = ({ users, param, setParam }) => {
-
   return <form action="">
     <input type="text" value={param.name} onChange={evt => setParam({
       ...param,
@@ -11,9 +10,9 @@ export const SearchPanel = ({ users, param, setParam }) => {
       ...param,
       personId: evt.target.value
     })}>
-      <option value={''}></option>
+      <option value={''}>Select</option>
       {
-        users.map( user => <option value={user.id}>{user.name}</option>)
+        users.map( user => <option key={user.id} value={user.id || ''}>{user.name || ''}</option>)
       }
     </select>
   </form>

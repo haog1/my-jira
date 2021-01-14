@@ -10,7 +10,7 @@ export const List = ({ users, list }) => {
     </thead>
     <tbody>
       {
-        list?.map(task => <tr>
+        list?.map(task => <tr key={task.id}>
           <td>{task.name}</td>
           <td>{users.find(user => user.id === task.personId)?.name || 'Unkonwn'}</td>
         </tr>)

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
-
-import { api } from '../../common/api'
+import * as qs from 'qs'
+import { cleanObject } from 'utils/cleaner'
+import { api } from '../../utils/api'
 import { SearchPanel } from './search-panel'
 import { List } from './list'
 
@@ -16,14 +17,12 @@ export const ProjectListPage = () => {
   const [list, setList] = useState([])
 
   useEffect(() => {
-    fetch(`${api.baseUrl}/projects`).then(async res => {
+    fetch(`${api.baseUrl}/projects?${qs.stringify(cleanObject(param))}`).then(async res => {
       if (res.ok) {
-        console.log(res);
         setList(await res.json())
       }
     })
   }, [param]) // Take effect when param changes
-
 
   useEffect(() => {
     fetch(`${api.baseUrl}/users`).then(async res => {
@@ -31,10 +30,10 @@ export const ProjectListPage = () => {
         setUsers(await res.json())
       }
     })
-  }, [users])
+  }, [])
 
   return <div>
-    <SearchPanel param={param} setParam={setParam}/>
-    <List list={list} />
+    <SearchPanel users={users} param={param} setParam={setParam}/>
+    <List list={list} users={users} />
   </div>
 }
