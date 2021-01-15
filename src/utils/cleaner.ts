@@ -1,4 +1,4 @@
-export const isFalseValue = (val: any) => (val === 0 ? false : !val);
+export const isFalseValue = (val: unknown) => (val === 0 ? false : !val);
 
 export const cleanObject = (obj: object) => {
   const result = { ...obj };

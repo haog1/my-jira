@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import * as qs from "qs";
 import { cleanObject } from "utils/cleaner";
+import { useMount, useDebounce } from "../../utils/hooks";
 import { api } from "../../utils/api";
 import { SearchPanel } from "./search-panel";
 import { List } from "./list";
@@ -41,21 +42,4 @@ export const ProjectListPage = () => {
       <List list={list} users={users} />
     </div>
   );
-};
-
-export const useMount = (callback: () => void) => {
-  useEffect(() => {
-    callback();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-};
-
-export const useDebounce = (value: any, delay?: number) => {
-  const [debouncedVal, setDebouncedVal] = useState(value);
-  useEffect(() => {
-    const timeout = setTimeout(() => setDebouncedVal(value), delay);
-    return () => clearTimeout(timeout);
-  }, [value, delay]);
-
-  return debouncedVal;
 };
