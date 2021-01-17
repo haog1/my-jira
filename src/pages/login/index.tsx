@@ -1,4 +1,3 @@
-import { setMaxListeners } from "process";
 import React, { FormEvent } from "react";
 import { api } from "utils/api";
 
@@ -9,7 +8,7 @@ export const LoginPage = () => {
   }
 
   const login = (param: LoginProps) => {
-    fetch(`${api.baseUrl}/login`, {
+    fetch(`${api.baseUrl}/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -41,7 +40,7 @@ export const LoginPage = () => {
         <label htmlFor="password">Password</label>
         <input type="password" id={"password"} />
       </div>
-      <button type={"submit"}>Login</button>
+      <button type={"submit"}>Signup</button>
     </form>
   );
 };
