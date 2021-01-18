@@ -1,32 +1,16 @@
-import React, { FormEvent } from "react";
-import { useAuth } from "context/auth";
+import React, { useState } from "react";
+import { RegisterPanel } from "./register";
+import { LoginPanel } from "./login";
 
 export const LoginPage = () => {
-  const { user, login, register } = useAuth();
-
-  // HTMLFormElement extends Element
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const username = (event.currentTarget.elements[0] as HTMLInputElement)
-      .value;
-    const password = (event.currentTarget.elements[1] as HTMLInputElement)
-      .value;
-    register({ username, password });
-    // login({ username, password });
-  };
+  const [isRegister, setIsRegister] = useState(false);
 
   return (
-    <form onSubmit={handleSubmit}>
-      {user ? <h1>Welcome back {user?.name}</h1> : null}
-      <div>
-        <label htmlFor="username">Username</label>
-        <input type="text" id={"username"} />
-      </div>
-      <div>
-        <label htmlFor="password">Password</label>
-        <input type="password" id={"password"} />
-      </div>
-      <button type={"submit"}>Login</button>
-    </form>
+    <div>
+      {isRegister ? <RegisterPanel /> : <LoginPanel />}
+      <button onClick={() => setIsRegister(!isRegister)}>
+        Switch to {isRegister ? "Login" : "Register"}
+      </button>
+    </div>
   );
 };

@@ -1,17 +1,14 @@
 import React from "react";
 
-// import { ProjectListPage } from "./pages/project-list";
 import { LoginPage } from "./pages/login";
+import { useAuth } from "context/auth";
+import { DashboardPage } from "pages/dashboard";
 
 import "./App.css";
 
 function App() {
-  return (
-    <div className="App">
-      <LoginPage />
-      {/* <ProjectListPage /> */}
-    </div>
-  );
+  const { user } = useAuth();
+  return <div className="App">{user ? <DashboardPage /> : <LoginPage />}</div>;
 }
 
 export default App;
