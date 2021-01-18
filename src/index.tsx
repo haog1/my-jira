@@ -1,10 +1,13 @@
+import { loadDevTools } from "jira-dev-tool";
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
+
+import { AppProviders } from "context";
+
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { loadDevTools } from "jira-dev-tool";
-import { AppProviders } from "context";
+
+import "./index.css";
 
 loadDevTools(() =>
   ReactDOM.render(

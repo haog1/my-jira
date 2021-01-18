@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { RegisterPanel } from "./register";
+
 import { LoginPanel } from "./login";
+import { RegisterPanel } from "./register";
 
 export const LoginPage = () => {
   const [isRegister, setIsRegister] = useState(false);

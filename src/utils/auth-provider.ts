@@ -1,7 +1,6 @@
-import { User } from "pages/project-list/search-panel";
 import { AuthForm } from "context/auth";
+import { User } from "pages/project-list/search-panel";
 import { api } from "utils/api";
-
 const apiUrl = api.baseUrl;
 const localStorageKey = "__auth_provider_token__";
 

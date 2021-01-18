@@ -1,6 +1,7 @@
 import React, { ReactNode, useState } from "react";
-import * as auth from "utils/auth-provider";
+
 import { User } from "pages/project-list/search-panel";
+import * as auth from "utils/auth-provider";
 
 export interface AuthForm {
   username: string;

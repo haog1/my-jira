@@ -1,6 +1,6 @@
 import qs from "qs";
-import * as auth from "utils/auth-provider";
 
+import * as auth from "utils/auth-provider";
 interface apiProps {
   baseUrl: string;
 }

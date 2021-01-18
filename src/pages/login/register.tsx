@@ -1,8 +1,9 @@
 import React, { FormEvent } from "react";
+
 import { useAuth } from "context/auth";
 
 export const RegisterPanel = () => {
-  const { user, register } = useAuth();
+  const { register } = useAuth();
 
   // HTMLFormElement extends Element
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
