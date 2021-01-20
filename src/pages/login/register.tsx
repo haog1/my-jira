@@ -2,15 +2,16 @@ import { Form, Input } from 'antd'
 import React from 'react'
 
 import { useAuth } from 'context/auth'
+import { useAsync } from 'utils/hooks'
 
 import { LongButton } from '.'
-
 export const RegisterPanel = ({
   onError,
 }: {
   onError: (error: Error) => void
 }) => {
   const { register } = useAuth()
+  const { run, isLoading } = useAsync()
 
   const handleSubmit = async ({
     passwordConfirmation,
@@ -25,7 +26,7 @@ export const RegisterPanel = ({
       return
     }
     try {
-      await register(values)
+      await run(register(values))
     } catch (err) {
       onError(err)
     }
@@ -56,7 +57,7 @@ export const RegisterPanel = ({
         />
       </Form.Item>
       <Form.Item>
-        <LongButton htmlType={'submit'} type="primary">
+        <LongButton loading={isLoading} htmlType={'submit'} type="primary">
           Register
         </LongButton>
       </Form.Item>
