@@ -1,42 +1,42 @@
-import styled from "@emotion/styled";
-import { Button, Card, Divider } from "antd";
-import React, { useState } from "react";
+import styled from '@emotion/styled'
+import { Button, Card, Divider } from 'antd'
+import React, { useState } from 'react'
 
-import leftBg from "assets/left-bg.svg";
-import logo from "assets/logo.svg";
-import rightBg from "assets/right-bg.svg";
+import leftBg from 'assets/left-bg.svg'
+import logo from 'assets/logo.svg'
+import rightBg from 'assets/right-bg.svg'
 
-import { LoginPanel } from "./login";
-import { RegisterPanel } from "./register";
+import { LoginPanel } from './login'
+import { RegisterPanel } from './register'
 export const LoginPage = () => {
-  const [isRegister, setIsRegister] = useState(false);
+  const [isRegister, setIsRegister] = useState(false)
 
   return (
     <Container className="container">
       <Header className="header" />
       <ShadowCard>
-        <Title>{isRegister ? "Register" : "Sign In"}</Title>
+        <Title>{isRegister ? 'Register' : 'Sign In'}</Title>
         <div>
           {isRegister ? <RegisterPanel /> : <LoginPanel />}
           <Divider />
           <Button onClick={() => setIsRegister(!isRegister)}>
-            Switch to {isRegister ? "Login" : "Register"}
+            Switch to {isRegister ? 'Login' : 'Register'}
           </Button>
         </div>
       </ShadowCard>
       <Background className="background" />
     </Container>
-  );
-};
+  )
+}
 
 export const LongButton = styled(Button)`
   width: 100%;
-`;
+`
 
 const Title = styled.h2`
   margin-bottom: 2.4rem;
   color: rgb(94, 108, 132);
-`;
+`
 
 const Background = styled.div`
   z-index: 0;
@@ -49,20 +49,20 @@ const Background = styled.div`
   background-size: calc(((100vw - 40rem) / 2) - 3.2rem),
     calc(((100vw - 40rem) / 2) - 3.2rem), cover;
   background-image: url(${leftBg}), url(${rightBg});
-`;
+`
 
 const Header = styled.header`
   padding: 5rem 0;
   background: url(${logo}) no-repeat center;
   background-size: 8rem;
   width: 100%;
-`;
+`
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
+`
 
 const ShadowCard = styled(Card)`
   z-index: 1;
@@ -72,4 +72,4 @@ const ShadowCard = styled(Card)`
   min-height: 56rem;
   box-shadow: rgba(0, 0, 0, 0.1) 0 0 1rem;
   text-align: center;
-`;
+`

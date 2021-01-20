@@ -1,14 +1,14 @@
-import React from "react";
+import React from 'react'
 
-import { useAuth } from "context/auth";
-import { DashboardPage } from "pages/dashboard";
+import { useAuth } from 'context/auth'
+import { DashboardPage } from 'pages/dashboard'
 
-import { LoginPage } from "./pages/login";
+import { LoginPage } from './pages/login'
 
-import "./App.css";
+import './App.css'
 function App() {
-  const { user } = useAuth();
-  return <div className="App">{user ? <DashboardPage /> : <LoginPage />}</div>;
+  const { user } = useAuth()
+  return <div className="App">{user ? <DashboardPage /> : <LoginPage />}</div>
 }
 
-export default App;
+export default App

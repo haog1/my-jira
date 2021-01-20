@@ -1,61 +1,47 @@
-import { Table } from "antd";
-import dayjs from "dayjs";
-import React from "react";
+import { Table } from 'antd'
+import dayjs from 'dayjs'
+import React from 'react'
 
-import { User } from "pages/project-list/search-panel";
-interface Project {
-  id: string;
-  name: string;
-  personId: string;
-  pin: boolean;
-  organization: string;
-  created: number;
+import { User } from 'pages/project-list/search-panel'
+import { Project } from '.'
+import { TableProps } from 'antd/lib/table'
+
+interface ListProps extends TableProps<Project> {
+  users: User[]
 }
 
-interface ListProps {
-  users: User[];
-  list: Project[];
+export const List = ({ users, ...props }: ListProps) => {
+  const columns = [
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      sorter: (a: Project, b: Project) => a.name.localeCompare(b.name),
+    },
+    {
+      title: 'Department',
+      dataIndex: 'organization',
+      sorter: (a: Project, b: Project) => a.name.localeCompare(b.name),
+    },
+    {
+      title: 'Person',
+      render(value: string, task: Project) {
+        return (
+          <span>
+            {users.find(user => user.id === task.personId)?.name || 'Unknown'}
+          </span>
+        )
+      },
+    },
+    {
+      title: 'Date Created',
+      render(value: string, task: Project) {
+        return (
+          <span>
+            {task.created ? dayjs(task.created).format('DD/MM/YYYY') : ''}
+          </span>
+        )
+      },
+    },
+  ]
+  return <Table rowKey={'id'} pagination={false} columns={columns} {...props} />
 }
-
-export const List = ({ users, list }: ListProps) => {
-  return (
-    <Table
-      rowKey={"id"}
-      pagination={false}
-      columns={[
-        {
-          title: "Name",
-          dataIndex: "name",
-          sorter: (a, b) => a.name.localeCompare(b.name),
-        },
-        {
-          title: "Department",
-          dataIndex: "organization",
-          sorter: (a, b) => a.name.localeCompare(b.name),
-        },
-        {
-          title: "Person",
-          render(val, person) {
-            return (
-              <span>
-                {users.find((user) => user.id === person.personId)?.name ||
-                  "Unknown"}
-              </span>
-            );
-          },
-        },
-        {
-          title: "Date Created",
-          render(val, task) {
-            return (
-              <span>
-                {task.created ? dayjs(task.created).format("DD/MM/YYYY") : ""}
-              </span>
-            );
-          },
-        },
-      ]}
-      dataSource={list}
-    />
-  );
-};

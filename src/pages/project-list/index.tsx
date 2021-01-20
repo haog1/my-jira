@@ -1,44 +1,55 @@
-import styled from "@emotion/styled";
-import React, { useEffect, useState } from "react";
+import styled from '@emotion/styled'
+import { Typography } from 'antd'
+import React, { useEffect, useState } from 'react'
 
-import { cleanObject } from "utils/cleaner";
-import { useHttp } from "utils/http";
+import { cleanObject } from 'utils/cleaner'
+import { useHttp } from 'utils/http'
+import { useAsync, useDebounce, useMount } from '../../utils/hooks'
+import { List } from './list'
+import { SearchPanel } from './search-panel'
 
-import { useDebounce, useMount } from "../../utils/hooks";
-import { List } from "./list";
-import { SearchPanel } from "./search-panel";
+export interface Project {
+  id: string
+  name: string
+  personId: string
+  pin: boolean
+  organization: string
+  created: number
+}
+
 export const ProjectListPage = () => {
   const [param, setParam] = useState({
-    name: "",
-    personId: "",
-  });
+    name: '',
+    personId: '',
+  })
 
-  const client = useHttp();
-
-  const debouncedParam = useDebounce(param, 200);
-
-  const [users, setUsers] = useState([]);
-
-  const [list, setList] = useState([]);
+  const { run, isLoading, error, data: tasks } = useAsync<Project[]>()
+  const client = useHttp()
+  const debouncedParam = useDebounce(param, 200)
+  const [users, setUsers] = useState([])
 
   useEffect(() => {
-    client("projects", { data: cleanObject(debouncedParam) }).then(setList);
+    run(client('projects', { data: cleanObject(debouncedParam) }))
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedParam]); // Take effect when param changes
+  }, [debouncedParam]) // Take effect when param changes
 
   useMount(() => {
-    client("users").then(setUsers);
-  });
+    client('users').then(setUsers)
+  })
 
   return (
     <Container>
       <SearchPanel users={users} param={param} setParam={setParam} />
       <h1>Results</h1>
-      <List list={list} users={users} />
+      {error ? (
+        <Typography.Text type={'danger'}>{error.message}</Typography.Text>
+      ) : null}
+      <List loading={isLoading} users={users || []} dataSource={tasks || []} />
     </Container>
-  );
-};
+  )
+}
 
 const Container = styled.div`
   padding: 3.2rem;
-`;
+`
