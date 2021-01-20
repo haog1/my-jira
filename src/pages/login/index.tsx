@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { Button, Card, Divider } from 'antd'
+import { Button, Card, Divider, Typography } from 'antd'
 import React, { useState } from 'react'
 
 import leftBg from 'assets/left-bg.svg'
@@ -10,14 +10,22 @@ import { LoginPanel } from './login'
 import { RegisterPanel } from './register'
 export const LoginPage = () => {
   const [isRegister, setIsRegister] = useState(false)
+  const [error, setError] = useState<Error | null>(null)
 
   return (
     <Container className="container">
       <Header className="header" />
       <ShadowCard>
         <Title>{isRegister ? 'Register' : 'Sign In'}</Title>
+        {error ? (
+          <Typography.Text type={'danger'}>{error.message}</Typography.Text>
+        ) : null}
         <div>
-          {isRegister ? <RegisterPanel /> : <LoginPanel />}
+          {isRegister ? (
+            <RegisterPanel onError={setError} />
+          ) : (
+            <LoginPanel onError={setError} />
+          )}
           <Divider />
           <Button onClick={() => setIsRegister(!isRegister)}>
             Switch to {isRegister ? 'Login' : 'Register'}

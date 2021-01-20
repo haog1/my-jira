@@ -5,11 +5,30 @@ import { useAuth } from 'context/auth'
 
 import { LongButton } from '.'
 
-export const RegisterPanel = () => {
+export const RegisterPanel = ({
+  onError,
+}: {
+  onError: (error: Error) => void
+}) => {
   const { register } = useAuth()
 
-  const handleSubmit = (values: { username: string; password: string }) => {
-    register(values)
+  const handleSubmit = async ({
+    passwordConfirmation,
+    ...values
+  }: {
+    username: string
+    password: string
+    passwordConfirmation: string
+  }) => {
+    if (passwordConfirmation !== values.password) {
+      onError(new Error('Passwords do not match'))
+      return
+    }
+    try {
+      await register(values)
+    } catch (err) {
+      onError(err)
+    }
   }
 
   return (
@@ -25,6 +44,16 @@ export const RegisterPanel = () => {
         rules={[{ required: true, message: 'Password required' }]}
       >
         <Input placeholder={'Password'} type="password" id={'password'} />
+      </Form.Item>
+      <Form.Item
+        name="passwordConfirmation"
+        rules={[{ required: true, message: 'Password confirmation required' }]}
+      >
+        <Input
+          placeholder={'Password Confirmation'}
+          type="password"
+          id={'passwordConfirmation'}
+        />
       </Form.Item>
       <Form.Item>
         <LongButton htmlType={'submit'} type="primary">

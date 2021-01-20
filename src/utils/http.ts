@@ -27,8 +27,6 @@ export const http = async (
     config.body = JSON.stringify(data || {})
   }
 
-  console.log(endpoint, config)
-
   return window
     .fetch(`${api.baseUrl}/${endpoint}`, config)
     .then(async res => {
