@@ -1,31 +1,40 @@
-import React, { FormEvent } from "react";
+import { Button, Form, Input } from "antd";
+import React from "react";
 
 import { useAuth } from "context/auth";
+import { LongButton } from ".";
+
+interface LoginProps {
+  username: string;
+  password: string;
+}
 
 export const RegisterPanel = () => {
   const { register } = useAuth();
 
-  // HTMLFormElement extends Element
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const username = (event.currentTarget.elements[0] as HTMLInputElement)
-      .value;
-    const password = (event.currentTarget.elements[1] as HTMLInputElement)
-      .value;
-    register({ username, password });
+  const handleSubmit = (value: LoginProps) => {
+    register(value);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="username">Username</label>
-        <input type="text" id={"username"} />
-      </div>
-      <div>
-        <label htmlFor="password">Password</label>
-        <input type="password" id={"password"} />
-      </div>
-      <button type={"submit"}>Register</button>
-    </form>
+    <Form onFinish={handleSubmit}>
+      <Form.Item
+        name={"username"}
+        rules={[{ required: true, message: "Username required" }]}
+      >
+        <Input placeholder={"Username"} type="text" id={"username"} />
+      </Form.Item>
+      <Form.Item
+        name="password"
+        rules={[{ required: true, message: "Password required" }]}
+      >
+        <Input placeholder={"Password"} type="password" id={"password"} />
+      </Form.Item>
+      <Form.Item>
+        <LongButton htmlType={"submit"} type="primary">
+          Register
+        </LongButton>
+      </Form.Item>
+    </Form>
   );
 };
