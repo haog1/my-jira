@@ -1,19 +1,14 @@
-import { Button, Form, Input } from "antd";
+import { Form, Input } from "antd";
 import React from "react";
 
 import { useAuth } from "context/auth";
+
 import { LongButton } from ".";
-
-interface LoginProps {
-  username: string;
-  password: string;
-}
-
 export const RegisterPanel = () => {
   const { register } = useAuth();
 
-  const handleSubmit = (value: LoginProps) => {
-    register(value);
+  const handleSubmit = (values: { username: string; password: string }) => {
+    register(values);
   };
 
   return (

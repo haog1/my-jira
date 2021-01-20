@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Card, Button } from "antd";
+import { Button, Card, Divider } from "antd";
 import React, { useState } from "react";
 
 import leftBg from "assets/left-bg.svg";
@@ -8,7 +8,6 @@ import rightBg from "assets/right-bg.svg";
 
 import { LoginPanel } from "./login";
 import { RegisterPanel } from "./register";
-
 export const LoginPage = () => {
   const [isRegister, setIsRegister] = useState(false);
 
@@ -16,12 +15,13 @@ export const LoginPage = () => {
     <Container className="container">
       <Header className="header" />
       <ShadowCard>
-        <Title>{isRegister ? "Sign In" : "Register"}</Title>
+        <Title>{isRegister ? "Register" : "Sign In"}</Title>
         <div>
           {isRegister ? <RegisterPanel /> : <LoginPanel />}
-          <a onClick={() => setIsRegister(!isRegister)}>
+          <Divider />
+          <Button onClick={() => setIsRegister(!isRegister)}>
             Switch to {isRegister ? "Login" : "Register"}
-          </a>
+          </Button>
         </div>
       </ShadowCard>
       <Background className="background" />

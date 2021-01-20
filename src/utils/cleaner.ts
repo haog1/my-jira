@@ -1,12 +1,11 @@
-export const isFalseValue = (val: unknown) => (val === 0 ? false : !val);
+export const isVoid = (val: unknown) =>
+  val === undefined || val === null || val === "";
 
-export const cleanObject = (obj: object) => {
+export const cleanObject = (obj: { [key: string]: unknown }) => {
   const result = { ...obj };
   Object.keys(result).forEach((key) => {
-    //@ts-ignore
     const val = result[key];
-    if (isFalseValue(val)) {
-      //@ts-ignore
+    if (isVoid(val)) {
       delete result[key];
     }
   });

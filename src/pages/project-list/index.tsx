@@ -1,18 +1,19 @@
-import * as qs from "qs";
+import styled from "@emotion/styled";
 import React, { useEffect, useState } from "react";
 
 import { cleanObject } from "utils/cleaner";
+import { useHttp } from "utils/http";
 
-import { api } from "../../utils/api";
 import { useDebounce, useMount } from "../../utils/hooks";
 import { List } from "./list";
 import { SearchPanel } from "./search-panel";
-
 export const ProjectListPage = () => {
   const [param, setParam] = useState({
     name: "",
     personId: "",
   });
+
+  const client = useHttp();
 
   const debouncedParam = useDebounce(param, 200);
 
@@ -21,27 +22,23 @@ export const ProjectListPage = () => {
   const [list, setList] = useState([]);
 
   useEffect(() => {
-    fetch(
-      `${api.baseUrl}/projects?${qs.stringify(cleanObject(debouncedParam))}`
-    ).then(async (res) => {
-      if (res.ok) {
-        setList(await res.json());
-      }
-    });
+    client("projects", { data: cleanObject(debouncedParam) }).then(setList);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedParam]); // Take effect when param changes
 
   useMount(() => {
-    fetch(`${api.baseUrl}/users`).then(async (res) => {
-      if (res.ok) {
-        setUsers(await res.json());
-      }
-    });
+    client("users").then(setUsers);
   });
 
   return (
-    <div>
+    <Container>
       <SearchPanel users={users} param={param} setParam={setParam} />
+      <h1>Results</h1>
       <List list={list} users={users} />
-    </div>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  padding: 3.2rem;
+`;

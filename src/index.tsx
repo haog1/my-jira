@@ -1,4 +1,4 @@
-import { loadDevTools } from "jira-dev-tool";
+import { loadServer, DevTools } from "jira-dev-tool";
 import React from "react";
 import ReactDOM from "react-dom";
 
@@ -9,10 +9,11 @@ import reportWebVitals from "./reportWebVitals";
 
 import "./index.css";
 
-loadDevTools(() =>
+loadServer(() =>
   ReactDOM.render(
     <React.StrictMode>
       <AppProviders>
+        <DevTools />
         <App />
       </AppProviders>
     </React.StrictMode>,
