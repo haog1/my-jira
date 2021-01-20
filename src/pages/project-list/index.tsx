@@ -1,14 +1,12 @@
 import styled from '@emotion/styled'
 import { Typography } from 'antd'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
-import { cleanObject } from 'utils/cleaner'
-import { useHttp } from 'utils/http'
-import { useAsync, useDebounce, useMount } from '../../utils/hooks'
+import { useDebounce, useTasks, useUsers } from '../../utils/hooks'
 import { List } from './list'
 import { SearchPanel } from './search-panel'
 
-export interface Project {
+export interface Task {
   id: string
   name: string
   personId: string
@@ -22,25 +20,13 @@ export const ProjectListPage = () => {
     name: '',
     personId: '',
   })
-
-  const { run, isLoading, error, data: tasks } = useAsync<Project[]>()
-  const client = useHttp()
   const debouncedParam = useDebounce(param, 200)
-  const [users, setUsers] = useState([])
-
-  useEffect(() => {
-    run(client('projects', { data: cleanObject(debouncedParam) }))
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedParam]) // Take effect when param changes
-
-  useMount(() => {
-    client('users').then(setUsers)
-  })
+  const { isLoading, error, data: tasks } = useTasks(debouncedParam)
+  const { data: users } = useUsers()
 
   return (
     <Container>
-      <SearchPanel users={users} param={param} setParam={setParam} />
+      <SearchPanel users={users || []} param={param} setParam={setParam} />
       <h1>Results</h1>
       {error ? (
         <Typography.Text type={'danger'}>{error.message}</Typography.Text>

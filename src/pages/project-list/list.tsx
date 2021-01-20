@@ -3,10 +3,10 @@ import dayjs from 'dayjs'
 import React from 'react'
 
 import { User } from 'pages/project-list/search-panel'
-import { Project } from '.'
+import { Task } from '.'
 import { TableProps } from 'antd/lib/table'
 
-interface ListProps extends TableProps<Project> {
+interface ListProps extends TableProps<Task> {
   users: User[]
 }
 
@@ -15,16 +15,16 @@ export const List = ({ users, ...props }: ListProps) => {
     {
       title: 'Name',
       dataIndex: 'name',
-      sorter: (a: Project, b: Project) => a.name.localeCompare(b.name),
+      sorter: (a: Task, b: Task) => a.name.localeCompare(b.name),
     },
     {
       title: 'Department',
       dataIndex: 'organization',
-      sorter: (a: Project, b: Project) => a.name.localeCompare(b.name),
+      sorter: (a: Task, b: Task) => a.name.localeCompare(b.name),
     },
     {
       title: 'Person',
-      render(value: string, task: Project) {
+      render(value: string, task: Task) {
         return (
           <span>
             {users.find(user => user.id === task.personId)?.name || 'Unknown'}
@@ -34,7 +34,7 @@ export const List = ({ users, ...props }: ListProps) => {
     },
     {
       title: 'Date Created',
-      render(value: string, task: Project) {
+      render(value: string, task: Task) {
         return (
           <span>
             {task.created ? dayjs(task.created).format('DD/MM/YYYY') : ''}

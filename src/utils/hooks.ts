@@ -1,19 +1,9 @@
+import { Task } from 'pages/project-list'
+import { User } from 'pages/project-list/search-panel'
 import { useEffect, useState } from 'react'
-
-export const useArray = <T>(arr: T[]) => {
-  const [value, setValue] = useState(arr)
-  return {
-    value,
-    setValue,
-    add: (item: T) => setValue([...value, item]),
-    clear: () => setValue([]),
-    removeIndex: (index: number) => {
-      const copy = [...value]
-      copy.splice(index, 1)
-      setValue(copy)
-    },
-  }
-}
+import { api } from './api'
+import { cleanObject } from './cleaner'
+import { useHttp } from './http'
 
 export const useMount = (callback: () => void) => {
   useEffect(() => {
@@ -33,7 +23,7 @@ export const useDebounce = <T>(value: T, delay?: number): T => {
   return debouncedValue
 }
 
-export interface State<T> {
+interface State<T> {
   error: Error | null
   data: T | null
   status: 'idle' | 'loading' | 'error' | 'success'
@@ -60,20 +50,17 @@ export const useAsync = <T>(initialState?: State<T>) => {
 
   const setError = (error: Error) =>
     setState({
-      data: null,
-      status: 'error',
       error,
+      status: 'error',
+      data: null,
     })
 
-  // Trigger async request
+  // run 用来触发异步请求
   const run = (promise: Promise<T>) => {
     if (!promise || !promise.then) {
-      throw new Error('Not Promise Type')
+      throw new Error('请传入 Promise 类型数据')
     }
-
-    // Set as loading status
     setState({ ...state, status: 'loading' })
-
     return promise
       .then(data => {
         setData(data)
@@ -88,11 +75,35 @@ export const useAsync = <T>(initialState?: State<T>) => {
   return {
     isIdle: state.status === 'idle',
     isLoading: state.status === 'loading',
-    isSuccess: state.status === 'success',
     isError: state.status === 'error',
+    isSuccess: state.status === 'success',
     run,
     setData,
     setError,
     ...state,
   }
+}
+
+export const useTasks = (param?: Partial<Task>) => {
+  const client = useHttp()
+  const { run, ...result } = useAsync<Task[]>()
+
+  useEffect(() => {
+    run(client(api.projectsEndpoint, { data: cleanObject(param || {}) }))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [param])
+
+  return result
+}
+
+export const useUsers = (param?: Partial<User>) => {
+  const client = useHttp()
+  const { run, ...result } = useAsync<User[]>()
+
+  useEffect(() => {
+    run(client(api.usersEndpoint, { data: cleanObject(param || {}) }))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [param])
+
+  return result
 }
