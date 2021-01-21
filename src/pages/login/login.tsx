@@ -20,6 +20,7 @@ export const LoginPanel = ({
     try {
       await run(login(values))
     } catch (err) {
+      console.log(err)
       onError(err)
     }
   }

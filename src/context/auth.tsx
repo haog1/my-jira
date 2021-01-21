@@ -1,21 +1,23 @@
 import React, { ReactNode, useState } from 'react'
 
+import { PageError } from 'components/page-error'
+import { PageLoading } from 'components/page-loading'
 import { User } from 'pages/project-list/search-panel'
+import { api } from 'utils/api'
 import * as auth from 'utils/auth-provider'
-import { useMount } from 'utils/hooks'
+import { useAsync, useMount } from 'utils/hooks'
 import { http } from 'utils/http'
-
 export interface AuthForm {
   username: string
   password: string
 }
 
-const boostrapUser = async () => {
-  let user = undefined
+const bootstrapUser = async () => {
+  let user = null
   const token = auth.getToken()
   if (token) {
-    let res = await http('me', { token })
-    user = res.user
+    const data = await http(api.checkLoginEndpoint, { token })
+    user = data.user
   }
   return user
 }
@@ -29,18 +31,35 @@ const AuthContext = React.createContext<
     }
   | undefined
 >(undefined)
+
 AuthContext.displayName = 'AuthContext'
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null)
+  const {
+    data: user,
+    error,
+    isLoading,
+    isIdle,
+    isError,
+    run,
+    setData: setUser,
+  } = useAsync<User | null>()
 
   const login = (form: AuthForm) => auth.login(form).then(setUser)
   const register = (form: AuthForm) => auth.register(form).then(setUser)
   const logout = () => auth.logout().then(() => setUser(null))
 
   useMount(() => {
-    boostrapUser().then(setUser)
+    run(bootstrapUser())
   })
+
+  if (isIdle || isLoading) {
+    return <PageLoading />
+  }
+
+  if (isError) {
+    return <PageError error={error} />
+  }
 
   return (
     <AuthContext.Provider

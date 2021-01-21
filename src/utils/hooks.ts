@@ -1,10 +1,11 @@
+import { useEffect, useState } from 'react'
+
 import { Task } from 'pages/project-list'
 import { User } from 'pages/project-list/search-panel'
-import { useEffect, useState } from 'react'
+
 import { api } from './api'
 import { cleanObject } from './cleaner'
 import { useHttp } from './http'
-
 export const useMount = (callback: () => void) => {
   useEffect(() => {
     callback()
@@ -68,7 +69,9 @@ export const useAsync = <T>(initialState?: State<T>) => {
       })
       .catch(error => {
         setError(error)
-        return Promise.reject(error)
+        console.log('err', error)
+        // return Promise.reject(error)
+        return error
       })
   }
 
