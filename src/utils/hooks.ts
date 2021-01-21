@@ -70,8 +70,7 @@ export const useAsync = <T>(initialState?: State<T>) => {
       .catch(error => {
         setError(error)
         console.log('err', error)
-        // return Promise.reject(error)
-        return error
+        return Promise.reject(error)
       })
   }
 

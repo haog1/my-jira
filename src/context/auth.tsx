@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }
 
   if (isError) {
-    return <PageError error={error} />
+    return <PageError error={new Error('Server will be back soon...')} />
   }
 
   return (

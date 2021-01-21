@@ -1,8 +1,9 @@
 import qs from 'qs'
-import { api } from './api'
-import * as auth from 'utils/auth-provider'
-import { useAuth } from 'context/auth'
 
+import { useAuth } from 'context/auth'
+import * as auth from 'utils/auth-provider'
+
+import { api } from './api'
 interface HttpRequestConfig extends RequestInit {
   data?: object
   token?: string
@@ -27,22 +28,19 @@ export const http = async (
     config.body = JSON.stringify(data || {})
   }
 
-  return window
-    .fetch(`${api.baseUrl}/${endpoint}`, config)
-    .then(async res => {
-      if (res.status === 401) {
-        await auth.logout()
-        window.location.reload()
-        return Promise.reject({ message: 'Please sign in' })
-      } else {
-        const data = await res.json()
-        if (res.ok) {
-          return data
-        }
-        return Promise.reject(data)
+  return window.fetch(`${api.baseUrl}/${endpoint}`, config).then(async res => {
+    if (res.status === 401) {
+      await auth.logout()
+      window.location.reload()
+      return Promise.reject({ message: 'Please sign in' })
+    } else {
+      const data = await res.json()
+      if (res.ok) {
+        return data
       }
-    })
-    .catch(err => {})
+      return Promise.reject(data)
+    }
+  })
 }
 
 export const useHttp = () => {

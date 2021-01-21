@@ -20,8 +20,7 @@ export const LoginPanel = ({
     try {
       await run(login(values))
     } catch (err) {
-      console.log(err)
-      onError(err)
+      onError(new Error('Username or password is incorrect!'))
     }
   }
 
